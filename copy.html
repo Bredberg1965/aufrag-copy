@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auftragsnummer kopieren</title>
 <style>
-  body { font-family: Arial, sans-serif; text-align: center; padding: 50px 20px; background-color: #f9f9f9; }
-  h2 { color: #0078D4; }
-  input { font-size: 24px; width: 80%; padding: 10px; margin: 20px 0; text-align: center; border: 1px solid #ccc; border-radius: 5px; }
-  button { font-size: 20px; padding: 10px 20px; background-color: #107C10; color: white; border: none; border-radius: 5px; }
-  button:active { background-color: #0b5c07; }
+  body { font-family: Arial; text-align:center; padding:50px 20px; background:#f9f9f9; }
+  h2 { color:#0078D4; }
+  input { font-size:24px; width:80%; padding:10px; margin:20px 0; text-align:center; border:1px solid #ccc; border-radius:5px; }
+  button { font-size:20px; padding:10px 20px; background:#107C10; color:white; border:none; border-radius:5px; }
+  button:active { background:#0b5c07; }
 </style>
 </head>
 <body>
@@ -23,7 +23,6 @@
 <button onclick="copyText()">Kopieren</button>
 
 <script>
-  // Wert aus URL-Parameter lesen
   const urlParams = new URLSearchParams(window.location.search);
   const value = urlParams.get('value');
   document.getElementById('auftragsnr').value = value || 'Fehler: kein Wert';
@@ -31,7 +30,7 @@
   function copyText() {
     const input = document.getElementById('auftragsnr');
     input.select();
-    input.setSelectionRange(0, 99999); // iOS
+    input.setSelectionRange(0, 99999); // für iOS
     navigator.clipboard.writeText(input.value)
       .then(() => alert('Kopiert!'))
       .catch(err => alert('Fehler beim Kopieren'));
