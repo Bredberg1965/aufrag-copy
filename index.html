@@ -3,38 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auftragsnummer kopieren</title>
+<title>Kopieren</title>
+
 <style>
-  body { font-family: Arial, sans-serif; text-align: center; padding: 50px 20px; background-color: #f9f9f9; }
-  h2 { color: #0078D4; }
-  input { font-size: 24px; width: 80%; padding: 10px; margin: 20px 0; text-align: center; border: 1px solid #ccc; border-radius: 5px; }
-  button { font-size: 20px; padding: 10px 20px; background-color: #107C10; color: white; border: none; border-radius: 5px; }
-  button:active { background-color: #0b5c07; }
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px 20px;
+    background: #f9f9f9;
+  }
+  h2 {
+    color: #0078D4;
+  }
+  input {
+    font-size: 24px;
+    width: 90%;
+    padding: 12px;
+    margin: 20px 0;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  button {
+    font-size: 20px;
+    padding: 12px 25px;
+    background: #107C10;
+    color: white;
+    border: none;
+    border-radius: 8px;
+  }
+  .info {
+    margin-top: 15px;
+    color: #555;
+  }
 </style>
+
 </head>
 <body>
 
 <h2>Auftragsnummer</h2>
-<p>Tippe auf den Button, um die Nummer zu kopieren:</p>
+<p>Tippe auf „Kopieren“</p>
 
-<input type="text" id="auftragsnr" readonly>
+<input type="text" id="text" readonly>
 
 <br>
 <button onclick="copyText()">Kopieren</button>
 
+<div class="info" id="status"></div>
+
 <script>
-  // Wert aus URL-Parameter lesen
-  const urlParams = new URLSearchParams(window.location.search);
-  const value = urlParams.get('value');
-  document.getElementById('auftragsnr').value = value || 'Fehler: kein Wert';
+  // Wert aus URL lesen
+  const params = new URLSearchParams(window.location.search);
+  const value = params.get('value');
+  document.getElementById('text').value = value || 'Kein Wert';
 
   function copyText() {
-    const input = document.getElementById('auftragsnr');
+    const input = document.getElementById('text');
     input.select();
-    input.setSelectionRange(0, 99999); // iOS
-    navigator.clipboard.writeText(input.value)
-      .then(() => alert('Kopiert!'))
-      .catch(err => alert('Fehler beim Kopieren'));
+    input.setSelectionRange(0, 99999);
+
+    navigator.clipboard.writeText(input.value).then(() => {
+      document.getElementById('status').innerText = "Kopiert ✅ – zurück zu Teams...";
+
+      // kurze Pause, dann zurück
+      setTimeout(() => {
+        // versucht zurückzugehen
+        window.history.back();
+
+        // fallback (falls history nicht klappt)
+        setTimeout(() => {
+          window.location.href = "msteams://";
+        }, 500);
+
+      }, 800);
+    });
   }
 </script>
 
